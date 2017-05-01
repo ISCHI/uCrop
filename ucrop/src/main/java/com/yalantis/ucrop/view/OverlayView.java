@@ -2,9 +2,12 @@ package com.yalantis.ucrop.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.os.Build;
@@ -48,11 +51,13 @@ public class OverlayView extends View {
     protected int mThisWidth, mThisHeight;
     protected float[] mCropGridCorners;
     protected float[] mCropGridCenter;
-    
+
     private int mCropGridRowCount, mCropGridColumnCount;
     private float mTargetAspectRatio;
     private float[] mGridPoints = null;
     private boolean mShowCropFrame, mShowCropGrid;
+    private int mOverlayImageResourceId;
+    private int mOverlayImageAlpha;
     private boolean mCircleDimmedLayer;
     private int mDimmedColor;
     private Path mCircularPath = new Path();
@@ -176,6 +181,24 @@ public class OverlayView extends View {
     }
 
     /**
+     * Setter for {@link #mOverlayImageResourceId} variable.
+     *
+     * @param overlayImageResourceId - set resource id for overlay image
+     */
+    public void setOverlayImage(int overlayImageResourceId) {
+        mOverlayImageResourceId = overlayImageResourceId;
+    }
+
+    /**
+     * Setter for {@link #mOverlayImageAlpha} variable.
+     *
+     * @param overlayAlpha - desired alpha value of the overlay [0..255]
+     */
+    public void setOverlayAlpha(int overlayAlpha) {
+        mOverlayImageAlpha = overlayAlpha;
+    }
+
+    /**
      * Setter for {@link #mDimmedColor} variable.
      *
      * @param dimmedColor - desired color of dimmed area around the crop bounds
@@ -294,6 +317,7 @@ public class OverlayView extends View {
         super.onDraw(canvas);
         drawDimmedLayer(canvas);
         drawCropGrid(canvas);
+        drawOverlayImage(canvas);
     }
 
     @Override
@@ -457,6 +481,23 @@ public class OverlayView extends View {
         if (mCircleDimmedLayer) { // Draw 1px stroke to fix antialias
             canvas.drawCircle(mCropViewRect.centerX(), mCropViewRect.centerY(),
                     Math.min(mCropViewRect.width(), mCropViewRect.height()) / 2.f, mDimmedStrokePaint);
+        }
+    }
+
+    /**
+     * This method draws an overlay image (with given alpha value) within the crop bounds.
+     *
+     * @param canvas - valid canvas object
+     */
+    protected void drawOverlayImage(@NonNull Canvas canvas) {
+        if (mOverlayImageResourceId != 0) {
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), mOverlayImageResourceId);
+
+            Paint alphaPaint = new Paint();
+            alphaPaint.setAlpha(mOverlayImageAlpha);
+
+            Rect rectangle = new Rect((int)mCropViewRect.left, (int)mCropViewRect.top, (int)mCropViewRect.right, (int)mCropViewRect.bottom);
+            canvas.drawBitmap(bitmap, null, rectangle, alphaPaint);
         }
     }
 

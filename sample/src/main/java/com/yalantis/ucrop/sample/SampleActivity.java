@@ -271,6 +271,8 @@ public class SampleActivity extends BaseActivity {
         options.setHideBottomControls(mCheckBoxHideBottomControls.isChecked());
         options.setFreeStyleCropEnabled(mCheckBoxFreeStyleCrop.isChecked());
 
+        options.setOverlayDrawable(R.drawable.heart2);
+
         /*
         If you want to configure how gestures work for all UCropActivity tabs
 

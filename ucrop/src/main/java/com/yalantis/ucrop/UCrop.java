@@ -266,6 +266,9 @@ public class UCrop {
         public static final String EXTRA_UCROP_WIDGET_CANCEL_DRAWABLE = EXTRA_PREFIX + ".UcropToolbarCancelDrawable";
         public static final String EXTRA_UCROP_WIDGET_CROP_DRAWABLE = EXTRA_PREFIX + ".UcropToolbarCropDrawable";
 
+        public static final String EXTRA_UCROP_OVERLAY_DRAWABLE = EXTRA_PREFIX + ".UcropOverlayDrawable";
+        public static final String EXTRA_UCROP_OVERLAY_ALPHA = EXTRA_PREFIX + ".UcropOverlayAlpha";
+
         public static final String EXTRA_UCROP_LOGO_COLOR = EXTRA_PREFIX + ".UcropLogoColor";
 
         public static final String EXTRA_HIDE_BOTTOM_CONTROLS = EXTRA_PREFIX + ".HideBottomControls";
@@ -455,6 +458,20 @@ public class UCrop {
          */
         public void setToolbarCropDrawable(@DrawableRes int drawable) {
             mOptionBundle.putInt(EXTRA_UCROP_WIDGET_CROP_DRAWABLE, drawable);
+        }
+
+        /**
+         * @param drawable - desired drawable for overlay
+         */
+        public void setOverlayDrawable(@DrawableRes int drawable) {
+            mOptionBundle.putInt(EXTRA_UCROP_OVERLAY_DRAWABLE, drawable);
+        }
+
+        /**
+         * @param alpha - desired alpha value of the overlay [0..255]
+         */
+        public void setOverlayAlpha(int alpha) {
+            mOptionBundle.putInt(EXTRA_UCROP_OVERLAY_ALPHA, alpha);
         }
 
         /**
